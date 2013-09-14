@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlgorithmsCourse2", "AlgorithmsCourse2\AlgorithmsCourse2.csproj", "{61DD7E56-C0C8-4F3E-BBE5-1F02D29CF09E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{61DD7E56-C0C8-4F3E-BBE5-1F02D29CF09E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61DD7E56-C0C8-4F3E-BBE5-1F02D29CF09E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61DD7E56-C0C8-4F3E-BBE5-1F02D29CF09E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61DD7E56-C0C8-4F3E-BBE5-1F02D29CF09E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
