@@ -11,7 +11,7 @@ namespace AlgorithmsCourse2
     {
         static void Main(string[] args)
         {
-            ScheduleJobs();
+            CalculateMstCost();
 
             Console.WriteLine("Done.");
             Console.ReadLine();
@@ -20,7 +20,7 @@ namespace AlgorithmsCourse2
         /// <summary>
         /// Greedy algorithms from lecture for minimizing the weighted sum of completion times of a set of jobs.
         /// 
-        /// File format:
+        /// Input file format:
         /// [number_of_jobs]
         /// [job_1_weight] [job_1_length]
         /// [job_2_weight] [job_2_length]
@@ -62,5 +62,43 @@ namespace AlgorithmsCourse2
             return weightedCompletionTimesSum;
         }
 
+        /// <summary>
+        /// Prim's algorithm for finding minimum spanning tree (MST).
+        /// 
+        /// Input file format:
+        /// [number_of_nodes] [number_of_edges]
+        /// [one_node_of_edge_1] [other_node_of_edge_1] [edge_1_cost]
+        /// [one_node_of_edge_2] [other_node_of_edge_2] [edge_2_cost]
+        /// </summary>
+        public static void CalculateMstCost()
+        {
+            string[] taskLines = File.ReadAllLines(@"TasksData\edges.txt");
+
+            int numberOfVertices = int.Parse(taskLines[0].Split(' ')[0]);
+            PrimsVertex[] primsVertices = new PrimsVertex[numberOfVertices + 1]; // position 0 in the array will always be empty
+            for (int i = 1; i < primsVertices.Length; i++)
+            {
+                primsVertices[i] = new PrimsVertex(i);
+            }
+
+            for (int i = 1; i < taskLines.Length; i++) // the first line contains number of vertices and number of edges
+            {
+                string[] lineValues = taskLines[i].Split(' ');
+
+                int firstVertexNumber = int.Parse(lineValues[0]);
+                int secondVertexNumber = int.Parse(lineValues[1]);
+                int cost = int.Parse(lineValues[2]);
+
+                PrimsEdge edge = new PrimsEdge(primsVertices[firstVertexNumber], primsVertices[secondVertexNumber], cost);
+
+                primsVertices[firstVertexNumber].Edges.Add(edge);
+                primsVertices[secondVertexNumber].Edges.Add(edge);
+            }
+
+            PrimsMst primsMst = new PrimsMst();
+            long mstCost = primsMst.CalculateMstCost(primsVertices);
+
+            Console.WriteLine("Minimum spanning tree cost: " + mstCost);
+        }
     }
 }
