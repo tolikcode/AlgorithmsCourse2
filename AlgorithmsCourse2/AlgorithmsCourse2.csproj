@@ -51,6 +51,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TasksImplementations\Job.cs" />
+    <Compile Include="TasksImplementations\KruskalsMst.cs" />
     <Compile Include="TasksImplementations\PrimsMst.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -11,8 +11,8 @@ namespace AlgorithmsCourse2
     {
         static void Main(string[] args)
         {
-            CalculateMstCost();
-
+            CalculatePrimsMstCost();
+            CalculateKruskalsMstCost();
             Console.WriteLine("Done.");
             Console.ReadLine();
         }
@@ -70,7 +70,7 @@ namespace AlgorithmsCourse2
         /// [one_node_of_edge_1] [other_node_of_edge_1] [edge_1_cost]
         /// [one_node_of_edge_2] [other_node_of_edge_2] [edge_2_cost]
         /// </summary>
-        public static void CalculateMstCost()
+        public static void CalculatePrimsMstCost()
         {
             string[] taskLines = File.ReadAllLines(@"TasksData\edges.txt");
 
@@ -98,7 +98,27 @@ namespace AlgorithmsCourse2
             PrimsMst primsMst = new PrimsMst();
             long mstCost = primsMst.CalculateMstCost(primsVertices);
 
-            Console.WriteLine("Minimum spanning tree cost: " + mstCost);
+            Console.WriteLine("Minimum spanning tree cost by Prism: " + mstCost);
+        }
+
+        public static void CalculateKruskalsMstCost()
+        {
+            string[] taskLines = File.ReadAllLines(@"TasksData\edges.txt");
+            List<KruskalsEdge> edges = new List<KruskalsEdge>();
+
+            for (int i = 1; i < taskLines.Length; i++) // the first line contains number of vertices and number of edges
+            {
+                string[] lineValues = taskLines[i].Split(' ');
+                int firstVertexNumber = int.Parse(lineValues[0]);
+                int secondVertexNumber = int.Parse(lineValues[1]);
+                int cost = int.Parse(lineValues[2]);
+                edges.Add(new KruskalsEdge(firstVertexNumber, secondVertexNumber, cost));
+            }
+
+            KruskalsMst kruskalsMst = new KruskalsMst();
+            long mstCost = kruskalsMst.CalculateMstCost(edges);
+
+            Console.WriteLine("Minimum spanning tree cost by Kruskal: " + mstCost);
         }
     }
 }
