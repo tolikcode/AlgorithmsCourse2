@@ -50,13 +50,20 @@
     <Compile Include="DataStructures\UnionFind.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TasksImplementations\Edge.cs" />
     <Compile Include="TasksImplementations\Job.cs" />
     <Compile Include="TasksImplementations\KruskalsMst.cs" />
     <Compile Include="TasksImplementations\PrimsMst.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TasksImplementations\SingleLinkClustering.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="TasksData\clustering1.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TasksData\edges.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

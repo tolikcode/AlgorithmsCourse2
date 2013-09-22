@@ -13,22 +13,40 @@ namespace AlgorithmsCourse2.DataStructures
     /// </summary>
     class UnionFind<T>
     {
+        private int clustersCount;
         private Dictionary<T, T> parentsDictionary = new Dictionary<T, T>();
         private Dictionary<T, int> depthDictionary = new Dictionary<T, int>();
 
+        public int ElementsCount
+        {
+            get { return parentsDictionary.Count; }
+        }
+
+        /// <summary>
+        /// Number of clusters (disjoint sets of elements) that are not interconnected.
+        /// </summary>
+        public int ClustersCount
+        {
+            get { return clustersCount; }
+        }
+
+        public void Add(T element)
+        {
+            parentsDictionary.Add(element, element);
+            depthDictionary.Add(element, 0);
+            clustersCount++;
+        }
+
         public void Union(T element1, T element2)
         {
+            if (!CheckConnected(element1, element2))
+                clustersCount--;
+
             if (!parentsDictionary.ContainsKey(element1))
-            {
-                parentsDictionary.Add(element1, element1);
-                depthDictionary.Add(element1, 0);
-            }
+                Add(element1);
 
             if (!parentsDictionary.ContainsKey(element2))
-            {
-                parentsDictionary.Add(element2, element2);
-                depthDictionary.Add(element2, 0);
-            }
+                Add(element2);
 
             T parent1 = FindRecursive(element1);
             T parent2 = FindRecursive(element2);

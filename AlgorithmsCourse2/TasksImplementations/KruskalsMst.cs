@@ -6,44 +6,18 @@ using AlgorithmsCourse2.DataStructures;
 
 namespace AlgorithmsCourse2.TasksImplementations
 {
-    internal struct KruskalsEdge
-    {
-        private readonly int vertex1;
-        private readonly int vertex2;
-        private readonly int cost;
-
-        public KruskalsEdge(int vertex1, int vertex2, int cost)
-        {
-            this.vertex1 = vertex1;
-            this.vertex2 = vertex2;
-            this.cost = cost;
-        }
-
-        public int Vertex1
-        {
-            get { return vertex1; }
-        }
-
-        public int Vertex2
-        {
-            get { return vertex2; }
-        }
-
-        public int Cost
-        {
-            get { return cost; }
-        }
-    }
-
+    /// <summary>
+    /// Implementation of a Kruskal's algorithm for finding minimum spanning tree (MST).
+    /// </summary>
     class KruskalsMst
     {
-        public long CalculateMstCost(IEnumerable<KruskalsEdge> edges)
+        public long CalculateMstCost(IEnumerable<Edge> edges)
         {
-            List<KruskalsEdge> minimumSpanningTree = new List<KruskalsEdge>();
+            List<Edge> minimumSpanningTree = new List<Edge>();
             UnionFind<int> unionFind = new UnionFind<int>(); 
             edges = edges.OrderBy(edge => edge.Cost);
 
-            foreach (KruskalsEdge edge in edges)
+            foreach (Edge edge in edges)
             {
                 // if edge vertices are not yet connected by other edges,
                 // then we can safely add this edge to MST
@@ -54,7 +28,7 @@ namespace AlgorithmsCourse2.TasksImplementations
                 }
             }
 
-            return minimumSpanningTree.Aggregate<KruskalsEdge, long>(0, (current, kruskalsEdge) => current + kruskalsEdge.Cost);
+            return minimumSpanningTree.Aggregate<Edge, long>(0, (current, kruskalsEdge) => current + kruskalsEdge.Cost);
         }
     }
 }

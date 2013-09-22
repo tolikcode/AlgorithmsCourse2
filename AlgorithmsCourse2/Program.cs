@@ -11,8 +11,8 @@ namespace AlgorithmsCourse2
     {
         static void Main(string[] args)
         {
-            CalculatePrimsMstCost();
-            CalculateKruskalsMstCost();
+            ComputeMaxSpacingKClustering();
+
             Console.WriteLine("Done.");
             Console.ReadLine();
         }
@@ -101,10 +101,18 @@ namespace AlgorithmsCourse2
             Console.WriteLine("Minimum spanning tree cost by Prism: " + mstCost);
         }
 
+        /// <summary>
+        /// Kruskal's algorithm for finding minimum spanning tree (MST).
+        /// 
+        /// Input file format:
+        /// [number_of_nodes] [number_of_edges]
+        /// [one_node_of_edge_1] [other_node_of_edge_1] [edge_1_cost]
+        /// [one_node_of_edge_2] [other_node_of_edge_2] [edge_2_cost]
+        /// </summary>
         public static void CalculateKruskalsMstCost()
         {
             string[] taskLines = File.ReadAllLines(@"TasksData\edges.txt");
-            List<KruskalsEdge> edges = new List<KruskalsEdge>();
+            List<Edge> edges = new List<Edge>();
 
             for (int i = 1; i < taskLines.Length; i++) // the first line contains number of vertices and number of edges
             {
@@ -112,13 +120,49 @@ namespace AlgorithmsCourse2
                 int firstVertexNumber = int.Parse(lineValues[0]);
                 int secondVertexNumber = int.Parse(lineValues[1]);
                 int cost = int.Parse(lineValues[2]);
-                edges.Add(new KruskalsEdge(firstVertexNumber, secondVertexNumber, cost));
+                edges.Add(new Edge(firstVertexNumber, secondVertexNumber, cost));
             }
 
             KruskalsMst kruskalsMst = new KruskalsMst();
             long mstCost = kruskalsMst.CalculateMstCost(edges);
 
             Console.WriteLine("Minimum spanning tree cost by Kruskal: " + mstCost);
+        }
+
+        /// <summary>
+        /// Clustering algorithm for computing a max-spacing k-clustering
+        /// (maximal (over all possible k clusters) minimal space between k clusters).
+        /// Single-link clustering is used.
+        /// 
+        /// Input must be a complete graph, because we're supposed to know the distance between every node.
+        /// Input file format:
+        /// [number_of_nodes]
+        /// [edge 1 node 1] [edge 1 node 2] [edge 1 cost]
+        /// [edge 2 node 1] [edge 2 node 2] [edge 2 cost]
+        /// </summary>
+        public static void ComputeMaxSpacingKClustering()
+        {
+            int targetNumberOfClusters = 4; // from the task
+
+            string[] taskLines = File.ReadAllLines(@"TasksData\clustering1.txt");
+
+            int numberOfNodes = int.Parse(taskLines[0]);
+
+            List<Edge> distancesBetweenNodes = new List<Edge>();
+            for (int i = 1; i < taskLines.Length; i++) // the first line contains number of nodes
+            {
+                string[] lineValues = taskLines[i].Split(' ');
+                int firstVertexNumber = int.Parse(lineValues[0]);
+                int secondVertexNumber = int.Parse(lineValues[1]);
+                int cost = int.Parse(lineValues[2]);
+                distancesBetweenNodes.Add(new Edge(firstVertexNumber, secondVertexNumber, cost));
+            }
+
+            SingleLinkClustering singleLinkClustering = new SingleLinkClustering();
+            int maxMinSpacing = singleLinkClustering.ComputeMaxSpacingKClustering(distancesBetweenNodes, numberOfNodes,
+                                                              targetNumberOfClusters);
+
+            Console.WriteLine("Max spacing for {0} clusters: {1}", targetNumberOfClusters, maxMinSpacing);
         }
     }
 }
