@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using AlgorithmsCourse2.DataStructures;
 using AlgorithmsCourse2.TasksImplementations;
 
 namespace AlgorithmsCourse2
@@ -11,7 +14,7 @@ namespace AlgorithmsCourse2
     {
         static void Main(string[] args)
         {
-            ComputeMaxSpacingKClustering();
+            ComputeMaxSpacingKClusteringBig();
 
             Console.WriteLine("Done.");
             Console.ReadLine();
@@ -164,5 +167,45 @@ namespace AlgorithmsCourse2
 
             Console.WriteLine("Max spacing for {0} clusters: {1}", targetNumberOfClusters, maxMinSpacing);
         }
+
+        /// <summary>
+        /// Solving clustering problem for a large input.
+        /// All distances are provides implicitly. The distance between two nodes u and v in this problem is defined as
+        /// the Hamming distance--- the number of differing bits --- between the two nodes' labels.
+        /// The question is: what is the largest value of k such that there is a k-clustering with spacing at least 3?
+        /// That is, how many clusters are needed to ensure that no pair of nodes with all but 2 bits in common get split into different clusters?
+        /// 
+        /// Input file format:
+        /// [# of nodes] [# of bits for each node's label]
+        /// [first bit of node 1] ... [last bit of node 1]
+        /// [first bit of node 2] ... [last bit of node 2]
+        /// </summary>
+        public static void ComputeMaxSpacingKClusteringBig()
+        {
+            StreamReader streamReader = new StreamReader(@"TasksData\clustering_big.txt");
+
+            string firstLine = streamReader.ReadLine();
+            int numberOfNodes = int.Parse(firstLine.Split(' ')[0]);
+            int numberOfBits = int.Parse(firstLine.Split(' ')[1]);
+
+            // elements in the input file are represented as bit arrays,
+            // we're going work with them as with intergers
+            int[] elements = new int[numberOfNodes];
+            for (int i = 0; i < numberOfNodes; i++)
+            {
+                string line = streamReader.ReadLine();
+                string[] lineValues = line.Split(' ');
+                bool[] boolArray = new bool[numberOfBits];
+                for (int j = 0; j < numberOfBits; j++)
+                    boolArray[j] = lineValues[j] == "1";
+                elements[i] = new BitArray(boolArray).ToInt32();
+            }
+
+            ImplicitDistancesClustering implicitDistancesClustering = new ImplicitDistancesClustering();
+            int numberOfClusters = implicitDistancesClustering.ComputeNumberOfClustersForDistance(elements, numberOfBits);
+
+            Console.WriteLine("Number of clusters with spacing at least 3: {0}", numberOfClusters);
+        }
     }
+
 }
