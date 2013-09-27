@@ -14,7 +14,7 @@ namespace AlgorithmsCourse2
     {
         static void Main(string[] args)
         {
-            ComputeMaxSpacingKClusteringBig();
+            SolveKnapsackProblem();
 
             Console.WriteLine("Done.");
             Console.ReadLine();
@@ -205,6 +205,33 @@ namespace AlgorithmsCourse2
             int numberOfClusters = implicitDistancesClustering.ComputeNumberOfClustersForDistance(elements, numberOfBits);
 
             Console.WriteLine("Number of clusters with spacing at least 3: {0}", numberOfClusters);
+        }
+
+        /// <summary>
+        /// Finds the solution for Knapsack problem.
+        /// 
+        /// Input file format:
+        /// [knapsack_size][number_of_items]
+        /// [value_1] [weight_1]
+        /// [value_2] [weight_2]
+        /// </summary>
+        public static void SolveKnapsackProblem()
+        {
+            string[] taskLines = File.ReadAllLines(@"TasksData\knapsack1.txt");
+
+            int knapsakSize = int.Parse(taskLines[0].Split(' ')[0]);
+
+            List<KnapsackItem> items = new List<KnapsackItem>();
+            for (int i = 1; i < taskLines.Length; i++)
+            {
+                string[] lineValues = taskLines[i].Split(' ');
+                items.Add(new KnapsackItem(int.Parse(lineValues[0]), int.Parse(lineValues[1])));
+            }
+
+            KnapsackProblem knapsackProblem = new KnapsackProblem();
+            int optimalSolutionValue = knapsackProblem.CalcOptimalSolutionValue(items, knapsakSize);
+
+            Console.WriteLine("The optimal solution value: {0}", optimalSolutionValue);
         }
     }
 

@@ -53,6 +53,7 @@
     <Compile Include="TasksImplementations\Edge.cs" />
     <Compile Include="TasksImplementations\ImplicitDistancesClustering.cs" />
     <Compile Include="TasksImplementations\Job.cs" />
+    <Compile Include="TasksImplementations\KnapsackProblem.cs" />
     <Compile Include="TasksImplementations\KruskalsMst.cs" />
     <Compile Include="TasksImplementations\PrimsMst.cs">
       <SubType>Code</SubType>
@@ -72,6 +73,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TasksData\jobs.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TasksData\knapsack1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
