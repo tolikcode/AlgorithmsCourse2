@@ -17,11 +17,25 @@ namespace AlgorithmsCourse2.TasksImplementations
         }
     }
 
+    /// <summary>
+    /// Characteristics of knapsack subproblem - problem with a smaller number of items and/or smaller knapsack size.
+    /// </summary>
+    struct SubproblemCharacteristics
+    {
+        public readonly int NumberOfItems;
+        public readonly int KnapsackSize;
+
+        public SubproblemCharacteristics(int numberOfItems, int knapsackSize)
+        {
+            this.NumberOfItems = numberOfItems;
+            this.KnapsackSize = knapsackSize;
+        }
+    }
+
     class KnapsackProblem
     {
-        /// <summary>
-        /// Naive implementation of a Knapsack algorithm.
-        /// </summary>
+        #region Naive implementation of a Knapsack algorithm (Bottom-up approach)
+
         public int CalcOptimalSolutionValue(IList<KnapsackItem> items, int knapsackSize)
         {
             int[,] solutionArray = new int[items.Count + 1, knapsackSize + 1]; // +1 for cases itemsCount = 0 and knapsackSize = 0
@@ -70,5 +84,52 @@ namespace AlgorithmsCourse2.TasksImplementations
             Console.WriteLine("Knapsack size used: " + knapsackUsedSize);
             return solutionArray[items.Count, knapsackSize];
         }
+
+        #endregion Naive implementation of a Knapsack algorithm (Bottom-up approach)
+
+        #region Recursive implementation (Top-down approach)
+
+        private IList<KnapsackItem> _items;
+        private Dictionary<SubproblemCharacteristics, int> _subproblemsOptimalValues; 
+
+        public int CalcRecurciveOptimalSolutionValue(IList<KnapsackItem> items, int knapsackSize)
+        {
+            _items = items;
+            _subproblemsOptimalValues = new Dictionary<SubproblemCharacteristics, int>();
+            
+            int optimalSolutionValue = GetSubproblemSolutionValue(items.Count, knapsackSize);
+            Console.WriteLine("Total number of subproblems: " + (long)_items.Count*knapsackSize);
+            Console.WriteLine("Number of subproblems were solved: " + _subproblemsOptimalValues.Count);
+            return optimalSolutionValue;
+        }
+
+        private int GetSubproblemSolutionValue(int numberOfItems, int knapsackSize)
+        {
+            if (numberOfItems == 0)
+                return 0;
+
+            SubproblemCharacteristics currentSubproblemCharacteristics = new SubproblemCharacteristics(numberOfItems, knapsackSize);
+
+            if (_subproblemsOptimalValues.ContainsKey(currentSubproblemCharacteristics))
+                return _subproblemsOptimalValues[currentSubproblemCharacteristics];
+
+            KnapsackItem currentItem = _items[numberOfItems - 1];
+
+            int optimalValue;
+            if (knapsackSize > currentItem.Size)
+            {
+                optimalValue = Math.Max(GetSubproblemSolutionValue(numberOfItems - 1, knapsackSize),
+                                                                           GetSubproblemSolutionValue(numberOfItems - 1, knapsackSize - currentItem.Size) + currentItem.Value);
+            }
+            else
+            {
+                optimalValue = GetSubproblemSolutionValue(numberOfItems - 1, knapsackSize);
+            }
+
+            _subproblemsOptimalValues.Add(currentSubproblemCharacteristics, optimalValue);
+            return optimalValue;
+        }
+
+        #endregion Recursive implementation (top-down approach)
     }
 }

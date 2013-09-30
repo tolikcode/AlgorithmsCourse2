@@ -14,7 +14,7 @@ namespace AlgorithmsCourse2
     {
         static void Main(string[] args)
         {
-            SolveKnapsackProblem();
+            SolveKnapsackProblemBig();
 
             Console.WriteLine("Done.");
             Console.ReadLine();
@@ -232,6 +232,33 @@ namespace AlgorithmsCourse2
             int optimalSolutionValue = knapsackProblem.CalcOptimalSolutionValue(items, knapsakSize);
 
             Console.WriteLine("The optimal solution value: {0}", optimalSolutionValue);
+        }
+
+        /// <summary>
+        /// Finds the solution for Knapsack problem (works with a large input data size).
+        /// 
+        /// Input file format:
+        /// [knapsack_size][number_of_items]
+        /// [value_1] [weight_1]
+        /// [value_2] [weight_2]
+        /// </summary>
+        public static void SolveKnapsackProblemBig()
+        {
+            string[] taskLines = File.ReadAllLines(@"TasksData\knapsack_big.txt");
+
+            int knapsakSize = int.Parse(taskLines[0].Split(' ')[0]);
+
+            List<KnapsackItem> items = new List<KnapsackItem>();
+            for (int i = 1; i < taskLines.Length; i++)
+            {
+                string[] lineValues = taskLines[i].Split(' ');
+                items.Add(new KnapsackItem(int.Parse(lineValues[0]), int.Parse(lineValues[1])));
+            }
+
+            KnapsackProblem knapsackProblem = new KnapsackProblem();
+            int optimalSolutionValue = knapsackProblem.CalcRecurciveOptimalSolutionValue(items, knapsakSize);
+
+            Console.WriteLine("The optimal solution value for big: {0}", optimalSolutionValue);
         }
     }
 
