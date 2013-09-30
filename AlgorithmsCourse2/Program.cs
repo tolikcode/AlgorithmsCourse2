@@ -256,9 +256,14 @@ namespace AlgorithmsCourse2
             }
 
             KnapsackProblem knapsackProblem = new KnapsackProblem();
-            int optimalSolutionValue = knapsackProblem.CalcRecurciveOptimalSolutionValue(items, knapsakSize);
+            
+            Console.WriteLine("1. Recursive implementation (top-down approach)");
+            int recursiveSolutionValue = knapsackProblem.CalcRecursiveOptimalSolutionValue(items, knapsakSize);
+            Console.WriteLine("The optimal solution value with recursive top-down approach: {0}", recursiveSolutionValue);
 
-            Console.WriteLine("The optimal solution value for big: {0}", optimalSolutionValue);
+            Console.WriteLine("1. Naive implementation with 2 arrays (bottom-up aproach)");
+            int twoArraySolutionsValue = knapsackProblem.CaclOptimalSolutionValueWith2Arrays(items, knapsakSize);
+            Console.WriteLine("The optimal solution value with naive implementation: {0}", twoArraySolutionsValue);
         }
     }
 

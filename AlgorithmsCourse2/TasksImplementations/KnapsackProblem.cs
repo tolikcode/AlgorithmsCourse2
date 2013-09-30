@@ -92,7 +92,7 @@ namespace AlgorithmsCourse2.TasksImplementations
         private IList<KnapsackItem> _items;
         private Dictionary<SubproblemCharacteristics, int> _subproblemsOptimalValues; 
 
-        public int CalcRecurciveOptimalSolutionValue(IList<KnapsackItem> items, int knapsackSize)
+        public int CalcRecursiveOptimalSolutionValue(IList<KnapsackItem> items, int knapsackSize)
         {
             _items = items;
             _subproblemsOptimalValues = new Dictionary<SubproblemCharacteristics, int>();
@@ -118,6 +118,7 @@ namespace AlgorithmsCourse2.TasksImplementations
             int optimalValue;
             if (knapsackSize > currentItem.Size)
             {
+                //if needed, we can write down what items are in the optimal solution - that is when the right part of the following Max statement is bigger
                 optimalValue = Math.Max(GetSubproblemSolutionValue(numberOfItems - 1, knapsackSize),
                                                                            GetSubproblemSolutionValue(numberOfItems - 1, knapsackSize - currentItem.Size) + currentItem.Value);
             }
@@ -131,5 +132,51 @@ namespace AlgorithmsCourse2.TasksImplementations
         }
 
         #endregion Recursive implementation (top-down approach)
+
+        #region Implementation with two one-dimensional arrays (Bottom-up approach)
+
+        /// <summary>
+        /// Modification of a naive implementation of Knapsack algorithm, that uses 2 one-dimensional arrays instead of
+        /// one big two-dimensional array. First array represents a column of a two-dimensional array for a specific number of items n.
+        /// Second column represents a column of this two-dimensional array for number of items n+1.
+        /// Running time of this implementation is approximatly the same as naive one, but it doesn't require allocation of a big
+        /// two-dimensional array that might throw OutOfMemoryException for big problems.
+        /// </summary>
+        public int CaclOptimalSolutionValueWith2Arrays(IList<KnapsackItem> items, int knapsackSize)
+        {
+            int[] previousItemsNumberSolutions = new int[knapsackSize + 1];
+            for (int i = 0; i <= knapsackSize; i++)
+                previousItemsNumberSolutions[i] = 0;
+
+            int[] currentItemsNumberSolutions = new int[knapsackSize + 1];
+
+            for (int itemIndex = 1; itemIndex <= items.Count; itemIndex++)
+            {
+                currentItemsNumberSolutions = new int[knapsackSize + 1];
+                for (int sizeIndex = 0; sizeIndex <= knapsackSize; sizeIndex++)
+                {
+                    KnapsackItem currentItem = items[itemIndex - 1];
+
+                    if (sizeIndex >= currentItem.Size)
+                    {
+                        currentItemsNumberSolutions[sizeIndex] = Math.Max(previousItemsNumberSolutions[sizeIndex],
+                                                                           previousItemsNumberSolutions[sizeIndex - currentItem.Size] + currentItem.Value);
+                    }
+                    else
+                    {
+                        currentItemsNumberSolutions[sizeIndex] = previousItemsNumberSolutions[sizeIndex];
+                    }
+                }
+
+                if(itemIndex%100 == 0)
+                    Console.WriteLine("Number of items processed: "  + itemIndex);
+
+                previousItemsNumberSolutions = currentItemsNumberSolutions;
+            }
+
+            return currentItemsNumberSolutions[knapsackSize];
+        }
+
+        #endregion Implementation with two one-dimensional arrays (Bottom-up approach)
     }
 }
