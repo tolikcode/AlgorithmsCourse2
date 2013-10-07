@@ -14,8 +14,8 @@ namespace AlgorithmsCourse2
     {
         static void Main(string[] args)
         {
-            SolveKnapsackProblemBig();
-
+            FindShortestShortestPath();
+            
             Console.WriteLine("Done.");
             Console.ReadLine();
         }
@@ -264,6 +264,50 @@ namespace AlgorithmsCourse2
             Console.WriteLine("1. Naive implementation with 2 arrays (bottom-up aproach)");
             int twoArraySolutionsValue = knapsackProblem.CaclOptimalSolutionValueWith2Arrays(items, knapsakSize);
             Console.WriteLine("The optimal solution value with naive implementation: {0}", twoArraySolutionsValue);
+        }
+
+        public static void FindShortestShortestPath()
+        {
+            ComputeShortestPath(@"TasksData\g1.txt");
+            ComputeShortestPath(@"TasksData\g2.txt");
+            ComputeShortestPath(@"TasksData\g3.txt");
+        }
+
+        private static void ComputeShortestPath(string inputFilePath)
+        {
+            FloydWarshall floydWarshall = new FloydWarshall();
+
+            string[] taskLines = File.ReadAllLines(inputFilePath);
+            int numberOfVertices = int.Parse(taskLines[0].Split(' ')[0]);
+            List<Edge> edges = new List<Edge>();
+            for (int i = 1; i < taskLines.Length; i++) // the first line contains number of vertices and number of edges
+            {
+                string[] lineValues = taskLines[i].Split(' ');
+                edges.Add(new Edge(int.Parse(lineValues[0]), int.Parse(lineValues[1]), int.Parse(lineValues[2])));
+            }
+
+            try
+            {
+                Console.WriteLine("Computing shortest path for " + inputFilePath);
+
+                int[,] asps1 = floydWarshall.FindApsp(numberOfVertices, edges.ToArray());
+
+                int shortestPath = asps1[1, 1];
+                for (int i = 1; i <= numberOfVertices; i++)
+                {
+                    for (int j = 1; j <= numberOfVertices; j++)
+                    {
+                        if (asps1[i, j] < shortestPath)
+                            shortestPath = asps1[i, j];
+                    }
+                }
+
+                Console.WriteLine("The shortest path in {0}: {1}", inputFilePath, shortestPath);
+            }
+            catch (NegativeCycleException)
+            {
+                Console.WriteLine(inputFilePath + " has a negative cost cycle.");
+            }
         }
     }
 
