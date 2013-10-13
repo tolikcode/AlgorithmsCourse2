@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using AlgorithmsCourse2.DataStructures;
 using AlgorithmsCourse2.TasksImplementations;
 
@@ -14,8 +15,8 @@ namespace AlgorithmsCourse2
     {
         static void Main(string[] args)
         {
-            FindShortestShortestPath();
-            
+            FindTravelingSalesmanPath();
+           
             Console.WriteLine("Done.");
             Console.ReadLine();
         }
@@ -266,6 +267,13 @@ namespace AlgorithmsCourse2
             Console.WriteLine("The optimal solution value with naive implementation: {0}", twoArraySolutionsValue);
         }
 
+        /// <summary>
+        /// Computes APSP (All Pairs Shortest Path) and returns the shortest one.
+        /// 
+        /// Input file format:
+        /// The first line indicates the number of vertices and edges, respectively.
+        /// Each subsequent line describes an edge (the first two numbers are its tail and head, respectively) and its length (the third number).
+        /// </summary>
         public static void FindShortestShortestPath()
         {
             ComputeShortestPath(@"TasksData\g1.txt");
@@ -308,6 +316,37 @@ namespace AlgorithmsCourse2
             {
                 Console.WriteLine(inputFilePath + " has a negative cost cycle.");
             }
+        }
+
+
+        /// <summary>
+        /// Traveling Salesman problem. Finds the shortest path length visiting every vertex.
+        /// 
+        /// Input file format:
+        /// The first line indicates the number of cities.
+        /// Each city is a point in the plane, and each subsequent line indicates the x- and y-coordinates of a single city.
+        /// </summary>
+        public static void FindTravelingSalesmanPath()
+        {
+            TravelingSalesman travelingSalesman = new TravelingSalesman();
+
+            string[] taskLines = File.ReadAllLines(@"TasksData\tsp.txt");
+            int numberOfCities = int.Parse(taskLines[0]);
+            double[,] coordinates = new double[numberOfCities,2]; // 2 - number of coordinates needed (x, y)
+            for (int i = 1; i < taskLines.Length; i++)
+            {
+                coordinates[i - 1, 0] = double.Parse(taskLines[i].Split(' ')[0]);
+                coordinates[i - 1, 1] = double.Parse(taskLines[i].Split(' ')[1]);
+            }
+
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+
+            double result = travelingSalesman.ComputeOptimalPathLength(coordinates);
+
+            Console.WriteLine("The length of an optimal path: " + result);
+            stopwatch.Stop();
+            Console.WriteLine("Done in " + stopwatch.Elapsed);
         }
     }
 

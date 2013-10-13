@@ -62,6 +62,7 @@
     <Compile Include="TasksImplementations\SingleLinkClustering.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="TasksImplementations\TravelingSalesman.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="TasksData\clustering1.txt">
@@ -89,6 +90,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TasksData\knapsack_big.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TasksData\tsp.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
