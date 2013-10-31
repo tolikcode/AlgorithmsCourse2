@@ -39,9 +39,6 @@ namespace AlgorithmsCourse2.DataStructures
 
         public void Union(T element1, T element2)
         {
-            if (!CheckConnected(element1, element2))
-                clustersCount--;
-
             if (!parentsDictionary.ContainsKey(element1))
                 Add(element1);
 
@@ -50,6 +47,9 @@ namespace AlgorithmsCourse2.DataStructures
 
             T parent1 = FindRecursive(element1);
             T parent2 = FindRecursive(element2);
+
+            if(!parent1.Equals(parent2))
+                clustersCount--;
 
             int parent1Depth = depthDictionary[parent1];
             int parent2Depth = depthDictionary[parent2];
